@@ -14,5 +14,7 @@ func Ginsetup() *gin.Engine {
 func UserRoute(router *gin.Engine) {
 	router.POST("/signup", controller.Signup)
 	router.GET("/signin", controller.Signin)
-	router.GET("/admin",controller.Login)
+	router.GET("/admin", controller.Login)
+	router.GET("/list", controller.ListUser)
+	router.PATCH("/edit/:ID", controller.EditUser)
 }
