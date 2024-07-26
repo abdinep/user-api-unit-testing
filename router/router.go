@@ -13,4 +13,5 @@ func Ginsetup() *gin.Engine {
 }
 func UserRoute(router *gin.Engine) {
 	router.POST("/signup", controller.Signup)
+	router.GET("/signin", controller.Signin)
 }
