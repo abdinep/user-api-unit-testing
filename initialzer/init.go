@@ -3,7 +3,7 @@ package initialzer
 import (
 	"fmt"
 	"log"
-	"os"
+	"project/models"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -12,22 +12,26 @@ import (
 )
 
 var DB *gorm.DB
-var Mock *gorm.DB
 
 func InitSetup() {
 	DbInit()
 }
+func autoMigrate(db *gorm.DB) {
+	db.AutoMigrate(&models.User{})
+}
+
 func DbInit() {
 	var err error
-
-	dsn := os.Getenv("DSN")
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DSN := "host=localhost user=postgres password=7009 dbname=test port=5432"
+	db, err := gorm.Open(postgres.Open(DSN), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect DB")
+		log.Fatal(err)
 	}
+	autoMigrate(db)
+	DB = db
 	fmt.Println("============================ CONNECTED TO DB =====================================")
 }
-func MockDbConfig(t testing.T) *sqlmock.Sqlmock {
+func MockDbConfig(t *testing.T) *sqlmock.Sqlmock {
 	mockDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -41,6 +45,6 @@ func MockDbConfig(t testing.T) *sqlmock.Sqlmock {
 	if err != nil {
 		t.Fatalf("failed to initialize database: %v", err)
 	}
-	Mock = db
+	DB = db
 	return &mock
 }
