@@ -25,6 +25,12 @@ func Signup(c *gin.Context) {
 		})
 		return
 	}
+	if input.Name == "" || input.Email == "" || input.Password == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "All fields are required",
+		})
+		return
+	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Println("failed to hash password", err)

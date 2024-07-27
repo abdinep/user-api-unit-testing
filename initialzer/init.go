@@ -1,6 +1,7 @@
 package initialzer
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"project/models"
@@ -12,12 +13,13 @@ import (
 )
 
 var DB *gorm.DB
+var Mockdb *sql.DB
 
 func InitSetup() {
 	DbInit()
 }
 func autoMigrate(db *gorm.DB) {
-	db.AutoMigrate(&models.User{},&models.Admin{})
+	db.AutoMigrate(&models.User{}, &models.Admin{})
 }
 
 func DbInit() {
@@ -31,7 +33,7 @@ func DbInit() {
 	DB = db
 	fmt.Println("============================ CONNECTED TO DB =====================================")
 }
-func MockDbConfig(t *testing.T) *sqlmock.Sqlmock {
+func MockDbConfig(t *testing.T) sqlmock.Sqlmock {
 	mockDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("failed to open sqlmock database: %v", err)
@@ -45,6 +47,7 @@ func MockDbConfig(t *testing.T) *sqlmock.Sqlmock {
 	if err != nil {
 		t.Fatalf("failed to initialize database: %v", err)
 	}
+	Mockdb = mockDB
 	DB = db
-	return &mock
+	return mock
 }
