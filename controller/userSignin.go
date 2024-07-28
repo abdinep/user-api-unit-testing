@@ -9,14 +9,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type signinInput struct {
+type SigninInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
 func Signin(c *gin.Context) {
 	var datas models.User
-	var input signinInput
+	var input SigninInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(400, gin.H{
 			"error": "Failed to bind input data",
