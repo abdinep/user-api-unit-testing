@@ -28,7 +28,7 @@ func TestUserEdit(t *testing.T) {
 		mock.ExpectCommit()
 
 		router := gin.Default()
-		router.PATCH("/user/edit/:id", controller.EditUser)
+		router.PATCH("/user/edit/:ID", controller.EditUser)
 
 		user := models.User{
 			Name:  "userEdit1",
