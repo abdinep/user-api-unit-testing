@@ -35,7 +35,7 @@ jobs:
         EC2_KEY: ${{ secrets.EC2_KEY }}
       run: |
         echo "${EC2_KEY}" > abdin.pem
-        chmod 400 abdin.pem
+        chmod 600 abdin.pem
         ssh -i "abdin.pem" ubuntu@ec2-34-207-53-0.compute-1.amazonaws.com
         cd user_api_unit-testing/
         pkill -f project
