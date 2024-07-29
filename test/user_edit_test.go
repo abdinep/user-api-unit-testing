@@ -31,7 +31,7 @@ func TestUserEdit(t *testing.T) {
 		router.PATCH("/user/edit/:id", controller.EditUser)
 
 		user := models.User{
-			Name:  "userEditsd1",
+			Name:  "userEdit1",
 			Email: "userEdit1@gmail.com",
 		}
 		jsonValue, _ := json.Marshal(user)
