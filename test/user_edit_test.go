@@ -35,7 +35,7 @@ func TestUserEdit(t *testing.T) {
 			Email: "userEdit1@gmail.com",
 		}
 		jsonValue, _ := json.Marshal(user)
-		req, _ := http.NewRequest(http.MethodPatch, "/user/edit/11", bytes.NewBuffer(jsonValue))
+		req, _ := http.NewRequest("PATCH", "/user/edit/11", bytes.NewBuffer(jsonValue))
 		req.Header.Set("Content-Type", "application/json")
 
 		w := httptest.NewRecorder()
