@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"project/initialzer"
 	"project/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,32 +41,32 @@ type EditUserInput struct {
 }
 
 func EditUser(c *gin.Context) {
-	var edit EditUserInput
 	var user models.User
-	userID := c.Param("ID")
-	if err := initialzer.DB.First(&user, userID).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error":  "user not found",
-			"status": 401,
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid ID",
 		})
 		return
 	}
-	if err := c.ShouldBindJSON(&edit); err != nil {
-		c.JSON(400, gin.H{
-			"error": "Failed to bind data",
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid request",
 		})
 		return
 	}
-	user.Name = edit.Name
-	user.Email = edit.Email
-	if err := initialzer.DB.Save(&user).Error; err != nil {
+	edit := map[string]interface{}{
+		"name":  user.Name,
+		"email": user.Email,
+	}
+	if err := initialzer.DB.Model(&models.User{}).Where("id = ?", id).Updates(edit).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "failed to update user",
+			"error": "Failed to update user",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "user updated",
-		"status":  200,
+		"message": "Successfully updated user",
+		"code":    200,
 	})
 }

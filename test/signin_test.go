@@ -24,13 +24,13 @@ func TestSignin(t *testing.T) {
 		defer initialzer.Mockdb.Close()
 
 		Mock.ExpectQuery("SELECT \\* FROM \"users\" WHERE email=\\$1 AND \"users\".\"deleted_at\" IS NULL ORDER BY \"users\".\"id\" LIMIT \\$2").
-			WithArgs("user@exmple.com", 1).
+			WithArgs("user@gmail.com", 1).
 			WillReturnRows(sqlmock.NewRows([]string{"id", "name", "email", "password"}).
 				AddRow(1, "user", "user@gmail.com", password))
 		server := gin.Default()
 		server.POST("/signin", controller.Signin)
 		credentials := controller.SigninInput{
-			Email:    "user@exmple.com",
+			Email:    "user@gmail.com",
 			Password: "user@123",
 		}
 		values, _ := json.Marshal(credentials)
