@@ -26,3 +26,21 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to EC2
+      env:
+        EC2_KEY: ${{ secrets.EC2_KEY }}
+      run: |
+        echo "${EC2_KEY}" > abdin.pem
+        chmod 400 abdin.pem
+        ssh -i "abdin.pem" ubuntu@ec2-34-207-53-0.compute-1.amazonaws.com
+        cd user_api_unit-testing/
+        pkill -f project
+        git pull
+        go build
+        nohup ./your-go-app > app.log 2>&1 &
+        exit
+        EOF
