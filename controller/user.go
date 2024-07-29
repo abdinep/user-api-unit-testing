@@ -14,7 +14,7 @@ func ListUser(c *gin.Context) {
 	count := 0
 	if err := initialzer.DB.Find(&list).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err,
+			"error": "Failed to fetch users",
 		})
 		return
 	}
