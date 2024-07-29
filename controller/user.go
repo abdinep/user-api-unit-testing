@@ -34,13 +34,13 @@ func ListUser(c *gin.Context) {
 	})
 }
 
-type editUser struct {
+type EditUserInput struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
 
 func EditUser(c *gin.Context) {
-	var edit editUser
+	var edit EditUserInput
 	var user models.User
 	userID := c.Param("ID")
 	if err := initialzer.DB.First(&user, userID).Error; err != nil {

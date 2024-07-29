@@ -24,7 +24,7 @@ func autoMigrate(db *gorm.DB) {
 
 func DbInit() {
 	var err error
-	DSN := "host=localhost user=postgres password=7009 dbname=test port=5432"
+	DSN := "postgres://postgres:7009@db:5432/test?sslmode=disable"
 	db, err := gorm.Open(postgres.Open(DSN), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
