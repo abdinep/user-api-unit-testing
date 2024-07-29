@@ -42,7 +42,7 @@ type EditUserInput struct {
 
 func EditUser(c *gin.Context) {
 	var user models.User
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("ID"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid ID",
